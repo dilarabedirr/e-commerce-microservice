@@ -1,6 +1,7 @@
 package com.dilarabedir.inventoryservice.business.concretes;
 
 import com.dilarabedir.commonpackage.utils.dtoConverter.DtoConverterService;
+import com.dilarabedir.inventoryservice.business.abstracts.CategoryService;
 import com.dilarabedir.inventoryservice.business.abstracts.ProductService;
 import com.dilarabedir.inventoryservice.business.dto.requests.create.CreateProductRequest;
 import com.dilarabedir.inventoryservice.business.dto.requests.update.UpdateProductRequest;
@@ -9,14 +10,14 @@ import com.dilarabedir.inventoryservice.business.dto.responses.get.product.GetAl
 import com.dilarabedir.inventoryservice.business.dto.responses.get.product.GetProductResponse;
 import com.dilarabedir.inventoryservice.business.dto.responses.update.UpdateProductResponse;
 import com.dilarabedir.inventoryservice.business.rules.ProductBusinessRules;
+import com.dilarabedir.inventoryservice.entities.Category;
 import com.dilarabedir.inventoryservice.entities.Product;
 import com.dilarabedir.inventoryservice.entities.enums.State;
 import com.dilarabedir.inventoryservice.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -24,6 +25,7 @@ public class ProductManager implements ProductService {
     private final ProductRepository repository;
     private final DtoConverterService dtoConverterService;
     private final ProductBusinessRules rules;
+    private final CategoryService categoryService;
 
     @Override
     public List<GetAllProductsResponse> getAll(boolean includePassive) {
@@ -42,6 +44,7 @@ public class ProductManager implements ProductService {
     public CreateProductResponse add(CreateProductRequest request) {
         var product = dtoConverterService.toEntity(request, Product.class);
         product.setId(null);
+        setCategoryToProduct(request.getCategoryIds(), product);
         var createProduct = repository.save(product);
         return dtoConverterService.toDto(createProduct, CreateProductResponse.class);
     }
@@ -58,12 +61,13 @@ public class ProductManager implements ProductService {
     @Override
     public void delete(UUID id) {
         rules.checkIfProductExists(id);
+        repository.deleteById(id);
     }
 
     @Override
-    public void changeProductState(UUID id, State state){
+    public void changeProductState(UUID id, State state) {
         rules.checkIfProductExists(id);
-        var product =repository.findById(id).orElseThrow();
+        var product = repository.findById(id).orElseThrow();
         product.setState(state);
         repository.save(product);
     }
@@ -74,4 +78,11 @@ public class ProductManager implements ProductService {
         }
         return repository.findAllByStateIsNot(State.PASSIVE);
     }
+
+    private void setCategoryToProduct(List<UUID> categoryIds, Product product) {
+        categoryIds.stream().forEach(categoryId -> {
+            product.getCategories().add(dtoConverterService.toEntity(categoryService.getById(categoryId), Category.class));
+        });
+    }
 }
+

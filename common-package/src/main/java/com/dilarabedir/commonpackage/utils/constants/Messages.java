@@ -5,4 +5,9 @@ public class Messages {
         public static final String NotExists = "PRODUCT_NOT_EXISTS";
         public static final String Exists = "PRODUCT_ALREADY_EXISTS";
     }
+
+    public static class Category {
+        public static final String NotExists = "CATEGORY_NOT_EXISTS";
+        public static final String Exists = "CATEGORY_ALREADY_EXISTS";
+    }
 }

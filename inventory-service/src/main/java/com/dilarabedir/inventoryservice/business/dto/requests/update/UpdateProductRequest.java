@@ -18,7 +18,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateProductRequest implements BaseDto {
-    // TODO : category eklenecek
+    private List<Integer> categoryIds;
     @NotBlank
     private String name;
     @Min(1)

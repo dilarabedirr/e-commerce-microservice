@@ -1,12 +1,15 @@
 package com.dilarabedir.inventoryservice.business.dto.responses.create;
 
 import com.dilarabedir.commonpackage.utils.dto.BaseDto;
+import com.dilarabedir.inventoryservice.business.dto.responses.get.GetCategoryToProductResponse;
 import com.dilarabedir.inventoryservice.entities.enums.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Getter
@@ -20,5 +23,5 @@ public class CreateProductResponse implements BaseDto {
     private double price;
     private String description;
     private State state;
-    // TODO: add category
+    private List<GetCategoryToProductResponse> categories;
 }

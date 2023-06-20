@@ -10,12 +10,16 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CreateProductRequest implements BaseDto {
-    // TODO : category eklenecek
+    private List<UUID> categoryIds;
     @NotBlank
     private String name;
     @Min(1)
