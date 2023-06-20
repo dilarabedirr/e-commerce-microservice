@@ -1,6 +1,7 @@
 package com.dilarabedir.inventoryservice.business.rules;
 
 import com.dilarabedir.commonpackage.utils.constants.Messages;
+import com.dilarabedir.commonpackage.utils.exceptions.BusinessException;
 import com.dilarabedir.inventoryservice.repository.CategoryRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,9 +13,9 @@ import java.util.UUID;
 public class CategoryBusinessRules {
     private final CategoryRepository repository;
 
-    public void checkIfCategoryExists(UUID id){
-        if (!repository.existsById(id)){
-            throw new RuntimeException(Messages.Category.NotExists);
+    public void checkIfCategoryExists(UUID id) {
+        if (!repository.existsById(id)) {
+            throw new BusinessException(Messages.Category.NotExists);
         }
     }
 }

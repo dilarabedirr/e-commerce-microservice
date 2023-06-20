@@ -1,6 +1,7 @@
 package com.dilarabedir.inventoryservice.business.rules;
 
 import com.dilarabedir.commonpackage.utils.constants.Messages;
+import com.dilarabedir.commonpackage.utils.exceptions.BusinessException;
 import com.dilarabedir.inventoryservice.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,7 @@ public class ProductBusinessRules {
 
     public void checkIfProductExists(UUID id) {
         if (!repository.existsById(id)) {
-            throw new RuntimeException(Messages.Product.NotExists);
+            throw new BusinessException(Messages.Product.NotExists);
         }
     }
 }
