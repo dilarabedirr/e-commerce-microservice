@@ -6,4 +6,8 @@ public class Paths {
     public static class Inventory {
         public static final String ServiceBasePackage = "com.dilarabedir.inventoryservice";
     }
+
+    public static class Filter {
+        public static final String ServiceBasePackage = "com.dilarabedir.filterservice";
+    }
 }
